@@ -181,11 +181,6 @@ src/
 npm install
 npm start
 
-
-Open in browser:
-
-http://localhost:3000
-
 🔧 Git Workflow Used
 
 Worked on member2 branch
