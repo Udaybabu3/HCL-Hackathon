@@ -88,7 +88,10 @@ Roles are stored in the database and embedded inside the JWT token.
 ```json
 {
   "id": "user_id",
+  "user_name" : "username",
+  "email" : "mail id",
   "role": "USER | PROVIDER",
+  "Password" : "bcrypt hased password",
   "iat": 1710000000,
   "exp": 1710086400
 }
