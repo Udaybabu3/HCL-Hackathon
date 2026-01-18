@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,10 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 const Login = () => {
   const [inputValue, setInputValue] = useState({
     email: "",
-    password: "",
+    password: ""
   });
 
-  const { email, password } = inputValue;
+  const { email, password} = inputValue;
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -39,7 +39,7 @@ const Login = () => {
 
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_API_URL}login`,
+        `${process.env.REACT_APP_API_URL}/login`,
         inputValue,
         { withCredentials: true }
       );
@@ -48,12 +48,25 @@ const Login = () => {
 
       if (success) {
         handleSuccess(message);
+        console.log("Full response data:", data);
+        console.log("Role from backend:", data.role);
+
         setTimeout(() => {
-          window.location.href = "https://tradingplatformdashboard.netlify.app"; // dashboard project
+          const userRole = data.role ? data.role.trim().toUpperCase() : null;
+          console.log("Processed role:", userRole);
+          
+          if (userRole === "USER") {
+            window.location.href = "http://localhost:3003";   // USER dashboard
+          } else if (userRole === "PROVIDER") {
+            window.location.href = "http://localhost:3004";   // PROVIDER dashboard
+          } else {
+            handleError(`Invalid role: ${userRole}`);
+          }
         }, 1000);
       } else {
         handleError(message);
       }
+
     } catch (error) {
       console.error(error);
       handleError(
@@ -64,6 +77,7 @@ const Login = () => {
     setInputValue({
       email: "",
       password: "",
+      role: ""
     });
   };
 
